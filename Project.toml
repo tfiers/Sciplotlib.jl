@@ -1,0 +1,7 @@
+name = "Sciplotlib"
+uuid = "61be95e5-9550-4d5f-a203-92a5acbc3116"
+authors = ["Tomas Fiers <tomas.fiers@gmail.com>"]
+version = "0.1.0"
+
+[compat]
+julia = "1.7"
