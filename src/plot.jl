@@ -23,6 +23,7 @@ end
 function _handle_units!(ax, plotargs)
     xs, ys = _extract_plotted_data!(plotargs)
     for (arrays, axis) in zip([xs, ys], [ax.xaxis, ax.yaxis])
+        isempty(arrays) && continue
         for array in arrays
             has_mixed_dimensions(array) &&
                 error("Argument has mixed dimensions: $array")
