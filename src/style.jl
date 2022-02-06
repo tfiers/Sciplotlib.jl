@@ -1,5 +1,5 @@
 
-mplstyle = Dict(
+sciplotlib_style = Dict(
     "axes.spines.top"      => false,
     "axes.spines.right"    => false,
     "axes.grid"            => true,
@@ -33,3 +33,17 @@ mplstyle = Dict(
     "axes.xmargin"         => 0,
     "axes.ymargin"         => 0,
 )
+
+"""
+Reset Matplotlib's style to `rcParams_original`, then apply the supplied dictionary of
+`rcParams` settings. Call without arguments to reset to Matplotlib's defaults. To reset to
+Sciplotlib's defaults, pass `sciplotlib_style`.
+
+The initial reset is so that you can experiment with parameters; namely add and then remove
+entries. Without the reset, once a parameter was set it would stay set.
+"""
+function set_mpl_style!(updatedRcParams = nothing)
+    merge!(rcParams, rcParams_original)
+    isnothing(updatedRcParams) || merge!(rcParams, updatedRcParams)
+    return rcParams
+end

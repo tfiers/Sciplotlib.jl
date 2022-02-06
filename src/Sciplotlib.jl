@@ -18,9 +18,6 @@ export plot
 include("set.jl")
 export set, legend, hylabel
 
-include("style.jl")
-export mplstyle
-
 include("colors.jl")
 export mix, lighten, darken, deemph, toRGBAtuple,
        black, white, lightgrey, mplcolors,
@@ -31,5 +28,11 @@ export as_mpl_type
 
 include("ticks.jl")
 include("util.jl")
+
+include("style.jl")
+export sciplotlib_style, set_mpl_style!
+
+include("init.jl")
+export rcParams, rcParams_original
 
 end
