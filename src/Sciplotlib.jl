@@ -1,10 +1,13 @@
 module Sciplotlib
 
-using PyPlot: PyPlot as plt, matplotlib as mpl
+using Reexport
+@reexport using Colors
+@reexport using PyPlot: PyPlot, plt, matplotlib as mpl
+#    `plt` is set to mpl.pyplot in PyPlot's __init__. `PyPlot as plt` doesn't work.
+
 using PyCall
 using Unitful
 using Unitful: Units
-using Colors
 using ColorVectorSpace
 using Printf
 using PartialFunctions: $

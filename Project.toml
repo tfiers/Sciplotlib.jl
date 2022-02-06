@@ -10,6 +10,7 @@ PartialFunctions = "570af359-4316-4cb7-8c74-252c00c2016b"
 Printf = "de0858da-6303-5e67-8744-51eddeeeb8d7"
 PyCall = "438e738f-606a-5dbb-bf0a-cddfbfd45ab0"
 PyPlot = "d330b81b-6aea-500a-939a-2ce795aea3ee"
+Reexport = "189a3867-3050-52da-a836-e630ba90ab69"
 Unitful = "1986cc42-f94f-5a68-af5c-568840ba703d"
 
 [compat]
