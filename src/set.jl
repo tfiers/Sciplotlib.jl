@@ -5,6 +5,7 @@ Use `xtickstyle` or `ytickstyle` = `:range` to mark the data range (and nothing 
 function set(
     ax;
     yaxis = :left,
+    xaxis = :bottom,
     xtickstyle = :default,
     ytickstyle = :default,
     xminorticks = true,
@@ -19,6 +20,16 @@ function set(
         ax.yaxis.set_visible(false)
         ax.spines["right"].set_visible(false)
         ax.spines["left"].set_visible(false)
+    end
+
+    if xaxis == :top
+        ax.xaxis.tick_top()
+        ax.spines["top"].set_visible(true)
+        ax.spines["bottom"].set_visible(false)
+    elseif xaxis == :off
+        ax.xaxis.set_visible(false)
+        ax.spines["top"].set_visible(false)
+        ax.spines["bottom"].set_visible(false)
     end
 
     # Instead of calling `ax.set(; kw...)`, we call the individual methods, so that we
