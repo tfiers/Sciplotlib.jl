@@ -15,7 +15,7 @@ sciplotlib_style = Dict(
     "legend.fontsize"      => "small", # Default is "medium"
     "axes.titlesize"       => "medium",
     "axes.labelsize"       => 9,
-    "xaxis.labellocation"  => "left",
+    "xaxis.labellocation"  => "right",
     "axes.titlelocation"   => "right",
 
     "legend.borderpad"     => 0.6,
