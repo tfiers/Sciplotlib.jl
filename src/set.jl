@@ -1,36 +1,51 @@
 """
 Set Axes properties and apply beautiful defaults.
-Use `xtickstyle` or `ytickstyle` = `:range` to mark the data range (and nothing else).
+
+Options. Each has both an `x`- and a `y`-prefixed version (`xtype`, `yminorticks`, …)
+- `type`: one of
+    - `:off`: hide all axis artists.
+    - `:categorical`: no ticks nor grid. Supply `x`/`yticklabels`.
+    - `:range`: ticks and grid mark the data range (and nothing else).
+    - `:fraction`: values are ∈ [0,1] and displayed as percentages.
+    - `:default`
+- `axloc`: `:left` or `:right` for `x` and `:top` or `:bottom` for `y`.
+- `minorticks`: only for `:default` and `:fraction` `type`s: whether to draw minor ticks.
+
+Arbitrary keywords like `xlabel=("log scale", :loc=>"center")`
+are passed on by calling `ax.set_xlabel("log_scale", loc="center")`.
+
+Arguments given in a similar fashion, to the keywords `legend` and `hylabel`, are passed on
+to the eponymous functions.
 """
 function set(
     ax;
-    yaxis = :left,
-    xaxis = :bottom,
-    xtickstyle = :default,
-    ytickstyle = :default,
-    xminorticks = true,
-    yminorticks = true,
+    xtype       = :default,       ytype       = :default,
+    xaxloc      = :bottom,        yaxloc      = :left,
+    xminorticks = true,           yminorticks = true,
+    xticklabels = nothing,        yticklabels = nothing,
     kw...
 )
-    if yaxis == :right
-        ax.yaxis.tick_right()
-        ax.spines["right"].set_visible(true)
-        ax.spines["left"].set_visible(false)
-    elseif yaxis == :off
-        ax.yaxis.set_visible(false)
-        ax.spines["right"].set_visible(false)
-        ax.spines["left"].set_visible(false)
-    end
-
-    if xaxis == :top
-        ax.xaxis.tick_top()
-        ax.spines["top"].set_visible(true)
-        ax.spines["bottom"].set_visible(false)
-    elseif xaxis == :off
-        ax.xaxis.set_visible(false)
-        ax.spines["top"].set_visible(false)
-        ax.spines["bottom"].set_visible(false)
-    end
+    # Axis location, spines, ticks, and gridlines.
+    (yaxloc == :right) && ax.yaxis.tick_right()
+    (xaxloc == :top  ) && ax.xaxis.tick_top()
+    yticks_on = ytype ∉ [:categorical, :off]
+    xticks_on = xtype ∉ [:categorical, :off]
+    leftticks_on   = (yticks_on && yaxloc == :left)
+    rightticks_on  = (yticks_on && yaxloc == :right)
+    bottomticks_on = (xticks_on && xaxloc == :bottom)
+    topticks_on    = (xticks_on && xaxloc == :top)
+        # If `false`, no gridlines, spines, nor ticks. (But can still have ticklabels).
+    ax.spines["left"  ].set_visible(leftticks_on)
+    ax.spines["right" ].set_visible(rightticks_on)
+    ax.spines["bottom"].set_visible(bottomticks_on)
+    ax.spines["top"   ].set_visible(topticks_on)
+    ax.tick_params(left=leftticks_on, right=rightticks_on, bottom=bottomticks_on, top=topticks_on)
+    ax.yaxis.grid(yticks_on)
+    ax.xaxis.grid(xticks_on)
+    (ytype == :off) && ax.yaxis.set_visible(false)
+    (xtype == :off) && ax.xaxis.set_visible(false)
+    (ytype == :fraction) && ax.set_ylim(0, 1)
+    (xtype == :fraction) && ax.set_xlim(0, 1)
 
     # Instead of calling `ax.set(; kw...)`, we call the individual methods, so that we
     # can pass more than just the one argument for each.
@@ -44,9 +59,14 @@ function set(
     # Various defaults that can't be set through rcParams
     ax.grid(axis = "both", which = "minor", color = "#F4F4F4", linewidth = 0.44)
     for pos in ("left", "right", "bottom", "top")
-        ax.spines[pos].set_position(("outward", 10))
-        #    `Spine.set_position` resets ticks, and in doing so removes text properties.
-        #    Hence these must be called before `_set_ticks` below.
+        spine = ax.spines[pos]
+        spine.set_position(("outward", spine.get_visible() ? 10 : 5))
+        # - `Spine.set_position` resets ticks, and in doing so removes text properties.
+        #   Hence these must be called before `_set_ticks` below.
+        # - For `:categorical`: the spine is not visible, but the ticklabels still are, and
+        #   their distance from the axis is determined by spine pos. We need to reset spine
+        #   pos: it might have been set too far outwards by a previous (non-categorical)
+        #   `set` call via `plot`.
     end
 
     # Fix default behaviour where only top and left gridlines are visible when gridlines are
@@ -55,10 +75,16 @@ function set(
     ax.xaxis.get_gridlines()[end].set_clip_on(false)  # right
 
     # Our opinionated tick defaults.
-    _set_ticks(ax, [xtickstyle, ytickstyle], [xminorticks, yminorticks])
+    _set_ticks(ax, [xtype, ytype], [xminorticks, yminorticks], [xticklabels, yticklabels])
+
+    # Seems that calling `set_major_formatter` before the `set_major_locator` of
+    # `_set_ticks` has no effect. Hence we do it after.
+    getpercentfmt() = PyPlot.matplotlib.ticker.PercentFormatter(xmax=1)
+    (ytype == :fraction) && ax.yaxis.set_major_formatter(getpercentfmt())
+    (xtype == :fraction) && ax.xaxis.set_major_formatter(getpercentfmt())
 end
 
-"""Given a tuple like `("arg", :key => "val")`, call `f("arg"; key="val")`."""
+"""Given a tuple `x = ("arg", :key => "val")`, call `f("arg"; key="val")`."""
 function _call(f, x::Tuple)
     firstkw = findfirst(el -> el isa Pair, x)
     if isnothing(firstkw)
