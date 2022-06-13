@@ -1,13 +1,13 @@
 """
-Beautiful plots by default. To plot on an existing Axes, pass it as the last non-keyword
+Beautiful plots by default. To plot on an existing Axes, pass it as the first keyword
 argument. Keyword arguments that apply to `Line2D`s are passed to `ax.plot`. The rest are
 passed to `set`.
 """
 function plot(args...; kw...)
     :data in keys(kw) && error("'data' keyword not supported.")
     args = [args...]  # Tuple to Vector (so we can `pop!`)
-    if last(args) isa PyObject && pyisinstance(last(args), mpl.axes.Axes)
-        ax = pop!(args)
+    if first(args) isa PyObject && pyisinstance(first(args), mpl.axes.Axes)
+        ax = popfirst!(args)
     else
         ax = plt.gca()
     end
