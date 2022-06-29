@@ -82,6 +82,7 @@ function set(
     getpercentfmt() = PyPlot.matplotlib.ticker.PercentFormatter(xmax=1)
     (ytype == :fraction) && ax.yaxis.set_major_formatter(getpercentfmt())
     (xtype == :fraction) && ax.xaxis.set_major_formatter(getpercentfmt())
+    return nothing
 end
 
 """Given a tuple `x = ("arg", :key => "val")`, call `f("arg"; key="val")`."""
