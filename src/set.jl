@@ -7,9 +7,10 @@ Options. Each has both an `x`- and a `y`-prefixed version (`xtype`, `yminorticks
     - `:categorical`: no ticks nor grid. Supply `x`/`yticklabels`.
     - `:range`: ticks and grid mark the data range (and nothing else).
     - `:fraction`: values are ∈ [0,1] and displayed as percentages.
-    - `:default`
+    - `:default`: our opinionated default
+    - `:keep`: don't change ticks or labels
 - `axloc`: `:left` or `:right` for `x` and `:top` or `:bottom` for `y`.
-- `minorticks`: only for `:default` and `:fraction` `type`s: whether to draw minor ticks.
+- `minorticks`: only for `:default` and `:fraction` types: whether to draw minor ticks.
 
 Arbitrary keywords like `xlabel=("log scale", :loc=>"center")`
 are passed on by calling `ax.set_xlabel("log_scale", loc="center")`.

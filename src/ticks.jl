@@ -6,7 +6,10 @@ function _set_ticks(ax, axtypes, minorticks, ticklabels)
 
         turn_off_minorticks() = axis.set_minor_locator(mpl.ticker.NullLocator())
 
-        if axtype == :range
+        if axtype == :keep
+            continue
+
+        elseif axtype == :range
             # Because we set the rcParam `autolimit_mode` to `data`, xlim/ylim == data range.
             a, b = axis.get_view_interval()
             digits = 2
