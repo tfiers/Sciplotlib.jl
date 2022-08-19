@@ -29,6 +29,7 @@ function _set_ticks(ax, axtypes, minorticks, ticklabels)
             axis.set_major_locator(mpl.ticker.MaxNLocator(nbins = 7, steps = [1, 2, 5, 10]))
             #   `nbins` should probably depend on figure size, i.e. how large texts are wrt
             #   other graphical elements.
+            #   For `steps` we omit 2.5.
             if minorticks
                 axis.set_minor_locator(mpl.ticker.AutoMinorLocator())
             else
@@ -66,5 +67,9 @@ function _set_ticks(ax, axtypes, minorticks, ticklabels)
         # Goal: labels stay visible when overlapping with elements of an adjactent Axes.
 
         axis.set_ticks(ticklocs, ticklabels; bbox)
+        # Note that this changes the tick locator to a FixedLocator. As a result, changing
+        # the lims (e.g. zooming in) after this, you won't get useful ticks. (Cannot replace
+        # by just `axis.set_ticklabels` either: then labels get out of sync with ticks)
+        # Solution is to call `set` again, to get good ticks again.
     end
 end
