@@ -27,26 +27,32 @@ function set(
     kw...
 )
     # Axis location, spines, ticks, and gridlines.
-    (yaxloc == :right) && ax.yaxis.tick_right()
-    (xaxloc == :top  ) && ax.xaxis.tick_top()
-    yticks_on = ytype ∉ [:categorical, :off]
-    xticks_on = xtype ∉ [:categorical, :off]
-    leftticks_on   = (yticks_on && yaxloc == :left)
-    rightticks_on  = (yticks_on && yaxloc == :right)
-    bottomticks_on = (xticks_on && xaxloc == :bottom)
-    topticks_on    = (xticks_on && xaxloc == :top)
-        # If `false`, no gridlines, spines, nor ticks. (But can still have ticklabels).
-    ax.spines["left"  ].set_visible(leftticks_on)
-    ax.spines["right" ].set_visible(rightticks_on)
-    ax.spines["bottom"].set_visible(bottomticks_on)
-    ax.spines["top"   ].set_visible(topticks_on)
-    ax.tick_params(left=leftticks_on, right=rightticks_on, bottom=bottomticks_on, top=topticks_on)
-    ax.yaxis.grid(yticks_on)
-    ax.xaxis.grid(xticks_on)
-    (ytype == :off) && ax.yaxis.set_visible(false)
-    (xtype == :off) && ax.xaxis.set_visible(false)
-    (ytype == :fraction) && ax.set_ylim(0, 1)
-    (xtype == :fraction) && ax.set_xlim(0, 1)
+    if ytype != :keep
+        (yaxloc == :right) && ax.yaxis.tick_right()
+        yticks_on = ytype ∉ [:categorical, :off]
+        leftticks_on  = (yticks_on && yaxloc == :left)
+        rightticks_on = (yticks_on && yaxloc == :right)
+            # If `false`, no gridlines, spines, nor ticks. (But can still have ticklabels).
+        ax.spines["left" ].set_visible(leftticks_on)
+        ax.spines["right"].set_visible(rightticks_on)
+        ax.tick_params(left=leftticks_on, right=rightticks_on)
+        ax.yaxis.grid(yticks_on)
+        (ytype == :off) && ax.yaxis.set_visible(false)
+        (ytype == :fraction) && ax.set_ylim(0, 1)
+    end
+    if xtype != :keep
+        (xaxloc == :top) && ax.xaxis.tick_top()
+        xticks_on = xtype ∉ [:categorical, :off]
+        bottomticks_on = (xticks_on && xaxloc == :bottom)
+        topticks_on    = (xticks_on && xaxloc == :top)
+        ax.spines["bottom"].set_visible(bottomticks_on)
+        ax.spines["top"   ].set_visible(topticks_on)
+        ax.tick_params(bottom=bottomticks_on, top=topticks_on)
+        ax.xaxis.grid(xticks_on)
+        (xtype == :off) && ax.xaxis.set_visible(false)
+        (xtype == :fraction) && ax.set_xlim(0, 1)
+    end
+    # (No, can't do this in loop to DRY: `.tick_right`, `.set_ylim`, etc. And macro: hard).
 
     # Instead of calling `ax.set(; kw...)`, we call the individual methods, so that we
     # can pass more than just the one argument for each.

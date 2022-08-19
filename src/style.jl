@@ -29,7 +29,7 @@ sciplotlib_style = Dict(
     "savefig.dpi"          => "figure",
     "savefig.bbox"         => "tight",
 
-    "axes.autolimit_mode"  => "data" ,
+    "axes.autolimit_mode"  => "round_numbers",  # Default: "data"
     "axes.xmargin"         => 0,
     "axes.ymargin"         => 0,
 )
