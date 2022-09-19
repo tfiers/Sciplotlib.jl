@@ -1,3 +1,14 @@
+# A note on precompilation and __init__.
+#
+# If Sciplotlib is used in another module, then that module must be marked as
+# `__precompile__(false)`. If not, during precompilation of that top-level module,
+# Sciplotlib's `__init__` will be called [*], which is a function that cannot be called
+# during a precompilation phase; it errors then.
+#
+# [*] Strange but true. Strange cause `__init__` is explicitly made to not be called during
+#     precompilation. It indeed is not called when precompiling Sciplotlib itself. But it
+#     _does_ get called when precompiling a downstream package.
+
 module Sciplotlib
 
 using Reexport
