@@ -32,6 +32,9 @@ include("util.jl")
 include("style.jl")
 export sciplotlib_style, set_mpl_style!
 
+include("precompile.jl")
+_precompile_()
+
 include("init.jl")
 export rcParams, rcParams_original
 
