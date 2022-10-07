@@ -2,8 +2,12 @@ module Sciplotlib
 
 using Reexport
 @reexport using Colors
-@reexport using PyPlot: PyPlot, plt, matplotlib as mpl
-#    `plt` is set to mpl.pyplot in PyPlot's __init__. `PyPlot as plt` doesn't work.
+@reexport using PyPlot: PyPlot, plt
+# `plt` is set to mpl.pyplot in PyPlot's __init__. `PyPlot as plt` doesn't work.
+
+using PyPlot: matplotlib as mpl
+# We don't `@reexport` this, to avoid the frequent
+# `WARNING: could not import PyPlot.mpl into VoltoMapSim`
 
 using PyCall
 using Unitful
