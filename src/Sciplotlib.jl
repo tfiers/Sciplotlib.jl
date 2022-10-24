@@ -17,7 +17,7 @@ using Printf
 using PartialFunctions: $
 
 include("plot.jl")
-export plot
+export plot, hist
 
 include("set.jl")
 export set, legend, hylabel

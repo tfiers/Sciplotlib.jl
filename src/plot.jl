@@ -27,6 +27,29 @@ function plot(args...; kw...)
     return ax
 end
 
+
+"""
+Create a new figure and axis, and call `ax.hist` and `set`. Distributes the given kwargs
+appropriately between those two. Returns: `(ax, counts, bins, bar_patches)`
+
+Docstring of plt.hist:
+
+$(@doc plt.hist)
+"""
+function hist(args...; kw...)
+    inspect = pyimport("inspect")
+    hsig = inspect.signature(plt.hist)  # https://docs.python.org/3.5/library/inspect.html#inspect.signature
+    signames = collect(hsig.parameters.keys())  # Any[], actually Strings.
+    is_hist_kw(name) = (String(name) in signames) || hasproperty(mpl.patches.Patch, "set_$name")
+    histkw = Dict(k => v for (k, v) in kw if is_hist_kw(k))
+    otherkw = Dict(k => v for (k, v) in kw if k ∉ keys(histkw))
+    fig, ax = plt.subplots()
+    out = ax.hist((args .|> as_mpl_type)...; (histkw |> mapvals $ as_mpl_type)...)
+    set(ax; otherkw...)
+    return (ax, out...)
+end
+
+
 function _handle_units!(ax, plotargs)
     xs, ys = _extract_plotted_data!(plotargs)
     for (arrays, axis) in zip([xs, ys], [ax.xaxis, ax.yaxis])
