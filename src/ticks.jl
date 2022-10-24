@@ -46,8 +46,8 @@ function _set_ticks(ax, axtypes, minorticks, ticklabels)
             ticklabels = [@sprintf "%.4g" t for t in ticklocs]
         end
 
-        units = hasproperty(axis, :unitful_units) ? axis.unitful_units : NoUnits
-        if units != NoUnits
+        units = hasproperty(axis, :unitful_units) ? axis.unitful_units : nothing
+        if units != nothing
             suffix = " " * repr("text/plain", units)
             if axis == ax.xaxis
                 prefix_width = round(Int, length(suffix) * 1.6)

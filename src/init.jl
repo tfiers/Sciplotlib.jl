@@ -19,4 +19,6 @@ function __init__()
     #                                                # Python to Julia dict.
     global rcParams_original = copy(mpl.rcParams)
     set_mpl_style!(sciplotlib_style)
+
+    @require Unitful = "1986cc42-f94f-5a68-af5c-568840ba703d" include("unitful.jl")
 end

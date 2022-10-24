@@ -9,9 +9,8 @@ using PyPlot: matplotlib as mpl
 # We don't `@reexport` this, to avoid the frequent
 # `WARNING: could not import PyPlot.mpl into VoltoMapSim`
 
+using Requires
 using PyCall
-using Unitful
-using Unitful: Units
 using ColorVectorSpace
 using Printf
 using PartialFunctions: $

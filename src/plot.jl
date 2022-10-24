@@ -51,6 +51,9 @@ end
 
 
 function _handle_units!(ax, plotargs)
+    if !isdefined(Main, :Unitful)
+        return
+    end
     xs, ys = _extract_plotted_data!(plotargs)
     for (arrays, axis) in zip([xs, ys], [ax.xaxis, ax.yaxis])
         isempty(arrays) && continue
@@ -66,10 +69,6 @@ function _handle_units!(ax, plotargs)
         axis.unitful_units = unit(eltype(first(arrays)))
     end
 end
-
-has_mixed_dimensions(x::AbstractArray{<:Quantity{T,Dims}}) where {T,Dims}  = false
-has_mixed_dimensions(x::AbstractArray{<:Quantity})                         = true
-has_mixed_dimensions(x::AbstractArray)                                     = false
 
 function _extract_plotted_data!(plotargs)
     # Process `ax.plot`'s vararg by peeling off the front: [x], y, [fmt].
