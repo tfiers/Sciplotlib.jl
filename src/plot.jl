@@ -4,15 +4,22 @@ argument. Keyword arguments that apply to `Line2D`s are passed to `ax.plot`. The
 passed to `set`.
 """
 function plot(args...; kw...)
-    :data in keys(kw) && error("'data' keyword not supported.")
+    if :data in keys(kw)
+        error("'data' keyword not supported.")
+    end
     args = [args...]  # Tuple to Vector (so we can `pop!`)
     if first(args) isa PyObject && pyisinstance(first(args), mpl.axes.Axes)
         ax = popfirst!(args)
     else
         ax = plt.gca()
     end
+    kw = Dict{Symbol, Any}(kw)  # to make mutable
+    if :clip_on ∉ keys(kw)
+        kw[:clip_on] = false
+    end
     plotkw = Dict(k => v for (k, v) in kw if hasproperty(mpl.lines.Line2D, "set_$k"))
     otherkw = Dict(k => v for (k, v) in kw if k ∉ keys(plotkw))
+
     ax.plot((args .|> as_mpl_type)...; (plotkw |> mapvals $ as_mpl_type)...)
     _handle_units!(ax, args)  # Mutating, because `_extract_plotted_data!` peels off `args`
                               # until it's empty.
