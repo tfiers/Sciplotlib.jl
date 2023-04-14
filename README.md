@@ -1,2 +1,4 @@
 # Sciplotlib.jl
-Plot with the full power of Matplotlib in Julia, with beautiful defaults, a productive API, and first class physical units support.
+
+Wrapper around PyPlot (which is a Julia wrapper of Matplotlib),
+with pretty defaults and a productive API.
