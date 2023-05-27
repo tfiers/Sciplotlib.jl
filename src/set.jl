@@ -24,6 +24,7 @@ function set(
     xaxloc      = :bottom,        yaxloc      = :left,
     xminorticks = true,           yminorticks = true,
     xticklabels = nothing,        yticklabels = nothing,
+    xunit       = nothing,        yunit       = nothing,
     kw...
 )
     # Axis location, spines, ticks, and gridlines.
@@ -82,7 +83,13 @@ function set(
     ax.xaxis.get_gridlines()[end].set_clip_on(false)  # right
 
     # Our opinionated tick defaults.
-    _set_ticks(ax, [xtype, ytype], [xminorticks, yminorticks], [xticklabels, yticklabels])
+    _set_ticks(
+        ax,
+        [xtype, ytype],
+        [xminorticks, yminorticks],
+        [xticklabels, yticklabels],
+        [xunit, yunit],
+    )
 
     # Seems that calling `set_major_formatter` before the `set_major_locator` of
     # `_set_ticks` has no effect. Hence we do it after.

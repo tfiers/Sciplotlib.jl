@@ -1,8 +1,8 @@
 
-function _set_ticks(ax, axtypes, minorticks, ticklabels)
+function _set_ticks(ax, axtypes, minorticks, ticklabels, units)
 
-    xypairs = zip([ax.xaxis, ax.yaxis], axtypes, minorticks, ticklabels)
-    for (axis, axtype, minorticks, ticklabels) in xypairs
+    xypairs = zip([ax.xaxis, ax.yaxis], axtypes, minorticks, ticklabels, units)
+    for (axis, axtype, minorticks, ticklabels, unit) in xypairs
 
         turn_off_minorticks() = axis.set_minor_locator(mpl.ticker.NullLocator())
 
@@ -46,9 +46,8 @@ function _set_ticks(ax, axtypes, minorticks, ticklabels)
             ticklabels = [@sprintf "%.4g" t for t in ticklocs]
         end
 
-        units = hasproperty(axis, :unitful_units) ? axis.unitful_units : nothing
-        if units != nothing
-            suffix = " " * repr("text/plain", units)
+        if unit != nothing
+            suffix = " $unit"
             if axis == ax.xaxis
                 prefix_width = round(Int, length(suffix) * 1.6)
                 prefix = repeat(" ", prefix_width)  # Imprecise hack to shift label to the
