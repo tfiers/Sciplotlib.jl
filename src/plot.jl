@@ -23,14 +23,14 @@ function plot(args...; ax = nothing, kw...)
 end
 
 
-"""
-Create a new figure and axis, and call `ax.hist` and `set`. Distributes the given kwargs
-appropriately between those two. Returns: `(ax, counts, bins, bar_patches)`
+# """
+# Create a new figure and axis, and call `ax.hist` and `set`. Distributes the given kwargs
+# appropriately between those two. Returns: `(ax, counts, bins, bar_patches)`
 
-Docstring of plt.hist:
+# Docstring of plt.hist:
 
-$(@doc plt.hist)
-"""
+# $(@doc plt.hist)
+# """
 function hist(args...; kw...)
     inspect = pyimport("inspect")
     hsig = inspect.signature(plt.hist)  # https://docs.python.org/3.5/library/inspect.html#inspect.signature

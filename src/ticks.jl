@@ -38,8 +38,8 @@ function _set_ticks(ax, axtypes, minorticks, ticklabels, units)
         end
 
         # LogLocator places ticks outside limits. So we trim those.
-        ticklocs = axis.get_ticklocs()
-        a, b = axis.get_view_interval()
+        ticklocs = pyconvert(Vector, axis.get_ticklocs())
+        a, b = pyconvert(Vector, axis.get_view_interval())
         ticklocs = ticklocs[a .≤ ticklocs .≤ b]
 
         if isnothing(ticklabels)
@@ -59,9 +59,9 @@ function _set_ticks(ax, axtypes, minorticks, ticklabels, units)
         end
 
         bbox = Dict(
-            :facecolor => mpl.rcParams["figure.facecolor"],
-            :edgecolor => "none",
-            :pad => 3,  # Relative to fontsize (google "bbox mutation scale").
+            "facecolor" => mpl.rcParams["figure.facecolor"],
+            "edgecolor" => "none",
+            "pad" => 3,  # Relative to fontsize (google "bbox mutation scale").
         )
         # Goal: labels stay visible when overlapping with elements of an adjactent Axes.
 

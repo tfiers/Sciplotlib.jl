@@ -68,7 +68,8 @@ function set(
     ax.grid(axis = "both", which = "minor", color = "#F4F4F4", linewidth = 0.44)
     for pos in ("left", "right", "bottom", "top")
         spine = ax.spines[pos]
-        spine.set_position(("outward", spine.get_visible() ? 10 : 5))
+        vis = pyconvert(Bool, spine.get_visible())
+        spine.set_position(("outward", vis ? 10 : 5))
         # - `Spine.set_position` resets ticks, and in doing so removes text properties.
         #   Hence these must be called before `_set_ticks` below.
         # - For `:categorical`: the spine is not visible, but the ticklabels still are, and
@@ -79,8 +80,9 @@ function set(
 
     # Fix default behaviour where only top and left gridlines are visible when gridlines are
     # on the limits.
-    ax.yaxis.get_gridlines()[1].set_clip_on(false)  # bottom
-    ax.xaxis.get_gridlines()[end].set_clip_on(false)  # right
+    ax.yaxis.get_gridlines()[0].set_clip_on(false)  # bottom
+    ax.xaxis.get_gridlines()[-1].set_clip_on(false)  # right
+    #   Note the python indices: 0 and -1 (not 1 and end)
 
     # Our opinionated tick defaults.
     _set_ticks(
@@ -93,7 +95,7 @@ function set(
 
     # Seems that calling `set_major_formatter` before the `set_major_locator` of
     # `_set_ticks` has no effect. Hence we do it after.
-    getpercentfmt() = PyPlot.matplotlib.ticker.PercentFormatter(xmax=1)
+    getpercentfmt() = mpl.ticker.PercentFormatter(xmax=1)
     (ytype == :fraction) && ax.yaxis.set_major_formatter(getpercentfmt())
     (xtype == :fraction) && ax.xaxis.set_major_formatter(getpercentfmt())
     return nothing

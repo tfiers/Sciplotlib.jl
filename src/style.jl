@@ -43,7 +43,19 @@ The initial reset is so that you can experiment with parameters; namely add and 
 entries. Without the reset, once a parameter was set it would stay set.
 """
 function set_mpl_style!(updatedRcParams = nothing)
-    merge!(rcParams, rcParams_original)
-    isnothing(updatedRcParams) || merge!(rcParams, updatedRcParams)
+    pymerge!(rcParams, rcParams_original)
+    isnothing(updatedRcParams) || pymerge!(rcParams, updatedRcParams)
     return rcParams
 end
+
+function pymerge!(base, new)
+    for (key, val) in new
+        base[key] = val
+    end
+end
+
+pymerge!(base, new::Py) = pymerge!(base, py_dictlike_to_Dict(new))
+
+py_dictlike_to_Dict(x) = Dict(key => x[key] for key in x)
+# `pyconvert(Dict, mpl.rcParams)` no work: it's some dict superclass,
+# and you get a "fatal inheritance error: could not merge MROs".
