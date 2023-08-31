@@ -123,7 +123,7 @@ Add a legend to the axes. Change the order of the items in the legend using
 """
 function legend(ax; reorder = false, legendkw...)
     handles, labels = ax.get_legend_handles_labels()
-    order = collect(1:length(handles))
+    order = collect(0:length(handles)-1)  # Python indexing
     if reorder != false
         for (i_old, i_new) in reorder
             insert!(order, i_new, popat!(order, i_old))
@@ -133,11 +133,11 @@ function legend(ax; reorder = false, legendkw...)
 end
 
 """Add a horizontal ylabel."""
-function hylabel(ax, s; loc=:left, dx=0, dy=4)
+function hylabel(ax, s; loc="left", dx=0, dy=4)
     offset = mpl.transforms.ScaledTranslation(dx / 72, dy / 72, ax.figure.dpi_scale_trans)
     transform = ax.transAxes + offset
     fontsize = mpl.rcParams["axes.labelsize"]
-    x = (loc == :left) ? 0 : (loc == :center) ? 0.5 : 1
+    x = (loc == "left") ? 0 : (loc == "center") ? 0.5 : 1
     t = ax.text(; x, y=1, s, transform, ha=loc, va="bottom", fontsize)
     ax.hylabel = t
 end
