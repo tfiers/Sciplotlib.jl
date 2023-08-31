@@ -6,7 +6,7 @@ sciplotlib_style = Dict(
     "axes.axisbelow"       => true,  # Grid _below_ patches (such as histogram bars), not on top.
     "axes.grid.which"      => "both",
     "grid.linewidth"       => 0.5,        # These are for major grid. Minor grid styling
-    "grid.color"           => "#E7E7E7",  # is set in `set!`.
+    "grid.color"           => "#E7E7E7",  #     is set in `set!`.
 
     "xtick.direction"      => "in",
     "ytick.direction"      => "in",
@@ -15,8 +15,8 @@ sciplotlib_style = Dict(
     "legend.fontsize"      => "small", # Default is "medium"
     "axes.titlesize"       => "medium",
     "axes.labelsize"       => 9,
-    "xaxis.labellocation"  => "right",
-    "axes.titlelocation"   => "right",
+    "xaxis.labellocation"  => "center",
+    "axes.titlelocation"   => "center",
 
     "legend.borderpad"     => 0.6,
     "legend.borderaxespad" => 0.2,
