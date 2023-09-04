@@ -15,7 +15,7 @@ include("plot.jl")
 export plot, hist
 
 include("set.jl")
-export set, legend, hylabel
+export set, legend, hylabel, rm_ticks_and_spine
 
 include("colors.jl")
 export mix, lighten, darken, deemph, toRGBAtuple,

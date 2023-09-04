@@ -141,3 +141,18 @@ function hylabel(ax, s; loc="left", dx=0, dy=4)
     t = ax.text(; x, y=1, s, transform, ha=loc, va="bottom", fontsize)
     ax.hylabel = t
 end
+
+
+function rm_ticks_and_spine(ax, where="bottom")
+    # You could also go `ax.xaxis.set_visible(false)`;
+    # but that removes gridlines too. This keeps 'em.
+    ax.spines[where].set_visible(false)
+    ax.tick_params(which="both"; Dict(Symbol(where)=>false)...)
+    if where ∈ ("bottom", "top")
+        ax.set_xlabel(nothing)
+        ax.set_xticklabels([])
+    else
+        ax.set_ylabel(nothing)
+        ax.set_yticklabels([])
+    end
+end
