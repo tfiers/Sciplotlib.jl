@@ -14,6 +14,7 @@ sciplotlib_style = Dict(
     "ytick.labelsize"      => "small", # idem
     "legend.fontsize"      => "small", # Default is "medium"
     "axes.titlesize"       => "medium",
+    "axes.titlepad"        => 12,      # Distance to axis. Default: 6.0 (pts)
     "axes.labelsize"       => 9,
     "xaxis.labellocation"  => "center",
     "axes.titlelocation"   => "center",
