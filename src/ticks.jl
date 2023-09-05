@@ -1,8 +1,8 @@
 
-function _set_ticks(ax, axtypes, minorticks, ticklabels, units)
+function _set_ticks(ax, axtypes, nbins, minorticks, ticklabels, units)
 
-    xypairs = zip([ax.xaxis, ax.yaxis], axtypes, minorticks, ticklabels, units)
-    for (axis, axtype, minorticks, ticklabels, unit) in xypairs
+    xypairs = zip([ax.xaxis, ax.yaxis], axtypes, nbins, minorticks, ticklabels, units)
+    for (axis, axtype, nbins, minorticks, ticklabels, unit) in xypairs
 
         turn_off_minorticks() = axis.set_minor_locator(mpl.ticker.NullLocator())
 
@@ -26,7 +26,7 @@ function _set_ticks(ax, axtypes, minorticks, ticklabels, units)
             # Mpl default is good, do nothing.
 
         else
-            axis.set_major_locator(mpl.ticker.MaxNLocator(nbins = 7, steps = [1, 2, 5, 10]))
+            axis.set_major_locator(mpl.ticker.MaxNLocator(; nbins, steps = [1, 2, 5, 10]))
             #   `nbins` should probably depend on figure size, i.e. how large texts are wrt
             #   other graphical elements.
             #   For `steps` we omit 2.5.
@@ -48,7 +48,7 @@ function _set_ticks(ax, axtypes, minorticks, ticklabels, units)
 
         if unit != nothing
             suffix = " $unit"
-            if axis == ax.xaxis
+            if Bool(axis == ax.xaxis)
                 prefix_width = round(Int, length(suffix) * 1.6)
                 prefix = repeat(" ", prefix_width)  # Imprecise hack to shift label to the
                                                     # right, to get number back under tick.
@@ -58,14 +58,15 @@ function _set_ticks(ax, axtypes, minorticks, ticklabels, units)
             ticklabels[end] = prefix * ticklabels[end] * suffix
         end
 
-        bbox = Dict(
-            "facecolor" => mpl.rcParams["figure.facecolor"],
-            "edgecolor" => "none",
-            "pad" => 3,  # Relative to fontsize (google "bbox mutation scale").
-        )
+        # bbox = Dict(
+        #     "facecolor" => mpl.rcParams["figure.facecolor"],
+        #     "edgecolor" => "none",
+        #     "pad" => 3,  # Relative to fontsize (google "bbox mutation scale").
+        # )
         # Goal: labels stay visible when overlapping with elements of an adjactent Axes.
 
-        axis.set_ticks(ticklocs, ticklabels; bbox)
+        # axis.set_ticks(ticklocs, ticklabels; bbox)
+        axis.set_ticks(ticklocs, ticklabels)
         # Note that this changes the tick locator to a FixedLocator. As a result, changing
         # the lims (e.g. zooming in) after this, you won't get useful ticks. (Cannot replace
         # by just `axis.set_ticklabels` either: then labels get out of sync with ticks)
