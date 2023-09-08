@@ -137,12 +137,11 @@ function legend(ax; reorder = false, legendkw...)
 end
 
 """Add a horizontal ylabel."""
-function hylabel(ax, s; loc="left", dx=0, dy=4)
+function hylabel(ax, s; loc="left", dx=0, dy=4, fontsize=mpl.rcParams["axes.labelsize"], kw...)
     offset = mpl.transforms.ScaledTranslation(dx / 72, dy / 72, ax.figure.dpi_scale_trans)
     transform = ax.transAxes + offset
-    fontsize = mpl.rcParams["axes.labelsize"]
     x = (loc == "left") ? 0 : (loc == "center") ? 0.5 : 1
-    t = ax.text(; x, y=1, s, transform, ha=loc, va="bottom", fontsize)
+    t = ax.text(; x, y=1, s, transform, ha=loc, va="bottom", fontsize, kw...)
     ax.hylabel = t
 end
 
