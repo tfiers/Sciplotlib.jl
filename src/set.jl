@@ -22,6 +22,7 @@ function set(
     ax;
     xtype       = :default,       ytype       = :default,
     xaxloc      = :bottom,        yaxloc      = :left,
+    xticks      = :auto,          yticks      = :auto,
     nbins_x     = 7,              nbins_y     = 7,
     xminorticks = true,           yminorticks = true,
     xticklabels = nothing,        yticklabels = nothing,
@@ -89,6 +90,7 @@ function set(
     _set_ticks(
         ax,
         [xtype, ytype],
+        [xticks, yticks],
         [nbins_x, nbins_y],
         [xminorticks, yminorticks],
         [xticklabels, yticklabels],

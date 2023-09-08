@@ -1,8 +1,8 @@
 
-function _set_ticks(ax, axtypes, nbins, minorticks, ticklabels, units)
+function _set_ticks(ax, args...)
 
-    xypairs = zip([ax.xaxis, ax.yaxis], axtypes, nbins, minorticks, ticklabels, units)
-    for (axis, axtype, nbins, minorticks, ticklabels, unit) in xypairs
+    xypairs = zip([ax.xaxis, ax.yaxis], args...)
+    for (axis, axtype, ticklocs, nbins, minorticks, ticklabels, unit) in xypairs
 
         turn_off_minorticks() = axis.set_minor_locator(mpl.ticker.NullLocator())
 
@@ -26,10 +26,12 @@ function _set_ticks(ax, axtypes, nbins, minorticks, ticklabels, units)
             # Mpl default is good, do nothing.
 
         else
-            axis.set_major_locator(mpl.ticker.MaxNLocator(; nbins, steps = [1, 2, 5, 10]))
-            #   `nbins` should probably depend on figure size, i.e. how large texts are wrt
-            #   other graphical elements.
-            #   For `steps` we omit 2.5.
+            if ticklocs == :auto
+                axis.set_major_locator(mpl.ticker.MaxNLocator(; nbins, steps = [1, 2, 5, 10]))
+                #   `nbins` should probably depend on figure size, i.e. how large texts are wrt
+                #   other graphical elements.
+                #   For `steps` we omit 2.5.
+            end
             if minorticks
                 axis.set_minor_locator(mpl.ticker.AutoMinorLocator())
             else
@@ -37,10 +39,12 @@ function _set_ticks(ax, axtypes, nbins, minorticks, ticklabels, units)
             end
         end
 
-        # LogLocator places ticks outside limits. So we trim those.
-        ticklocs = pyconvert(Vector, axis.get_ticklocs())
-        a, b = pyconvert(Vector, axis.get_view_interval())
-        ticklocs = ticklocs[a .≤ ticklocs .≤ b]
+        if ticklocs == :auto
+            # LogLocator places ticks outside limits. So we trim those.
+            ticklocs = pyconvert(Vector, axis.get_ticklocs())
+            a, b = pyconvert(Vector, axis.get_view_interval())
+            ticklocs = ticklocs[a .≤ ticklocs .≤ b]
+        end
 
         if isnothing(ticklabels)
             ticklabels = [@sprintf "%.4g" t for t in ticklocs]
