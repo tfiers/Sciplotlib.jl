@@ -11,7 +11,7 @@ function _set_ticks(ax, args...)
 
         elseif axtype == :range
             # Because we set the rcParam `autolimit_mode` to `data`, xlim/ylim == data range.
-            a, b = axis.get_view_interval()
+            a, b = pyconvert(Vector, axis.get_view_interval())
             digits = 2
             axis.set_ticks([round(a, RoundDown; digits), round(b, RoundUp; digits)])
             # Turn off all gridlines.
