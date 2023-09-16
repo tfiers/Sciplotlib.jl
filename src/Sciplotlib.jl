@@ -1,7 +1,9 @@
 module Sciplotlib
 
 using Reexport
-@reexport using Colors
+using Colors
+export Colors  # We don't `@reexport` Colors, as it's got a huge namespace.
+
 @reexport using PythonPlot: PythonPlot, pyplot as plt
 @reexport using PythonPlot: matplotlib as mpl
 
