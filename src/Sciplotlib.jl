@@ -13,6 +13,8 @@ using ColorVectorSpace
 using Printf
 using PartialFunctions: $
 
+export pyconvert
+
 include("plot.jl")
 export plot, hist
 
