@@ -1,4 +1,6 @@
 
+# See also ./init.jl
+
 sciplotlib_style = Dict(
     "axes.spines.top"      => false,
     "axes.spines.right"    => false,
