@@ -2,6 +2,9 @@
 # See also ./init.jl
 
 sciplotlib_style = Dict(
+    "font.size"            => 11,  # Points. Same as my LaTeX \documentclass[a4paper,11pt]{memoir}
+                                   # Sizes like "smaller", "small", "x-small" scale relative to this.
+
     "axes.spines.top"      => false,
     "axes.spines.right"    => false,
     "axes.grid"            => true,
