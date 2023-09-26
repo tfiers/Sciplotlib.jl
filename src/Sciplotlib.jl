@@ -32,6 +32,9 @@ export as_mpl_type
 include("ticks.jl")
 include("util.jl")
 
+include("figsize.jl")
+export print_size_info, set_bbox
+
 include("rcparams.jl")
 export sciplotlib_style, set_mpl_style!
 

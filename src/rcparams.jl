@@ -1,6 +1,8 @@
 
 # See also ./init.jl
 
+# Docs: https://matplotlib.org/stable/users/explain/customizing.html#the-default-matplotlibrc-file
+#
 sciplotlib_style = Dict(
     "font.size"            => 11,  # Points. Same as my LaTeX \documentclass[a4paper,11pt]{memoir}
                                    # Sizes like "smaller", "small", "x-small" scale relative to this.
@@ -33,7 +35,10 @@ sciplotlib_style = Dict(
     "figure.figsize"       => (4, 2.4),
     "figure.dpi"           => 200,
     "savefig.dpi"          => "figure",
-    "savefig.bbox"         => "tight",
+    "savefig.bbox"         => "tight",   # Default is "standard".
+        # IJulia display is hard-coded to "tight" (https://github.com/JuliaPy/PythonPlot.jl/issues/31)
+        # So setting "tight" here replicates on disk the figs shown in IJulia.
+        # See also `./figsize.jl`.
 
     "axes.autolimit_mode"  => "round_numbers",  # Default: "data"
     "axes.xmargin"         => 0,
@@ -53,6 +58,8 @@ function set_mpl_style!(updatedRcParams = nothing)
     isnothing(updatedRcParams) || pymerge!(rcParams, updatedRcParams)
     return rcParams
 end
+# You can also simply do `mpl.rcParams["some.key"] = value` and it'll work :)
+# Thx PythonCall.
 
 function pymerge!(base, new)
     for (key, val) in new
