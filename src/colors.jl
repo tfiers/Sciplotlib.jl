@@ -29,23 +29,3 @@ darken(c::C, original = 0.8) where {C<:Color} = C(mix(RGB(black), RGB(c), origin
 
 """Linearly interpolate ("lerp") between `a` (`t = 0`) and `b` (`t = 1`)."""
 mix(a, b, t=0.5) = a + t * (b - a)
-
-"""
-De-emphasise part of an Axes by colouring it light grey.
-`part` is one of {:xlabel, :ylabel, :xaxis, :yaxis}.
-"""
-function deemph(part::Symbol, ax; color = lightgrey)
-    color = toRGBAtuple(color)
-    if part == :xlabel
-        ax.xaxis.get_label().set_color(color)
-    elseif part == :ylabel
-        ax.yaxis.get_label().set_color(color)
-        hasproperty(ax, :hylabel) && ax.hylabel.set_color(color)
-    elseif part == :xaxis
-        foreach(loc -> ax.spines[loc].set_color(color), ["top", "bottom"])
-        ax.tick_params(; axis = "x", which = "both", color, labelcolor = color)
-    elseif part == :yaxis
-        foreach(loc -> ax.spines[loc].set_color(color), ["left", "right"])
-        ax.tick_params(; axis = "y", which = "both", color, labelcolor = color)
-    end
-end
