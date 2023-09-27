@@ -4,30 +4,33 @@
 # Docs: https://matplotlib.org/stable/users/explain/customizing.html#the-default-matplotlibrc-file
 #
 sciplotlib_style = Dict(
-    "font.size"            => 11,  # Points. Same as my LaTeX \documentclass[a4paper,11pt]{memoir}
-                                   # Sizes like "smaller", "small", "x-small" scale relative to this.
+    "font.size"            => 9,   # Points. Should be 11 for "medium" texts to match my LaTeX
+                                   # `\documentclass[a4paper,11pt]{memoir}`.
+                                   # But experientially, we need a smaller value to match the sizes.
+                                   # Sizes like "smaller", "small", "x-small" scale relative to this;
 
     "axes.spines.top"      => false,
     "axes.spines.right"    => false,
     "axes.grid"            => true,
-    "axes.axisbelow"       => true,  # Grid _below_ patches (such as histogram bars), not on top.
+    "axes.axisbelow"       => true,       # Grid _below_ patches (such as histogram bars), not on top.
     "axes.grid.which"      => "both",
     "grid.linewidth"       => 0.5,        # These are for major grid. Minor grid styling
     "grid.color"           => "#E7E7E7",  #     is set in `set!`.
 
     "xtick.direction"      => "in",
     "ytick.direction"      => "in",
-    "xtick.labelsize"      => "small", # Default is "medium"
-    "ytick.labelsize"      => "small", # idem
-    "legend.fontsize"      => "small", # Default is "medium"
-    "axes.titlesize"       => "medium",
-    "axes.titlepad"        => 12,      # Distance to axis. Default: 6.0 (pts)
-    "axes.labelsize"       => 9,
+    "xtick.labelsize"      => "medium", # Default.
+    "ytick.labelsize"      => "medium", # Default.
+    "legend.fontsize"      => 8,        # Default: "medium"
+    "axes.labelsize"       => "medium", # Default.
+    "axes.titlesize"       => "medium", # Default is "large"
+    "axes.titleweight"     => "bold",   # Default is "normal"
+    "axes.titlepad"        => 12,       # Distance to axis. Default: 6.0 (pts)
     "xaxis.labellocation"  => "center",
     "axes.titlelocation"   => "center",
 
-    "legend.borderpad"     => 0.6,
-    "legend.borderaxespad" => 0.2,
+    "legend.borderpad"     => 0.6,     # Default: 0.4 (pts)
+    "legend.borderaxespad" => 0.8,     # Default: 0.5 (pts)
 
     "lines.solid_capstyle" => "round",
 

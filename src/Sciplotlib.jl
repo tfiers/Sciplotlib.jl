@@ -4,16 +4,16 @@ using Reexport
 using Colors
 export Colors  # We don't `@reexport` Colors, as it's got a huge namespace.
 
+@reexport using PythonCall  # export `pyconvert`, `pybuiltins` (for `isinstance(…)`), etc
+
 @reexport using PythonPlot: PythonPlot, pyplot as plt
 @reexport using PythonPlot: matplotlib as mpl
 
 using Requires
-using PythonCall
 using ColorVectorSpace
 using Printf
 using PartialFunctions: $
 
-export pyconvert
 
 include("plot.jl")
 export plot, hist

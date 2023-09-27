@@ -30,7 +30,6 @@ function print_size_info(fig)
     info(w, h) = ("($w, $h), aspect: ", round2(aspect_ratio(w, h)))
     println("Given size:  ", info(wi, hi)...)
     println("Output size: ", info(wo, ho)...)
-    println("Width scaling: figure text will be ", round2(wo / wi), " × size of text in pdf")
 end
 
 
