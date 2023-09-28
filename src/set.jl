@@ -11,6 +11,8 @@ Options. Each has both an `x`- and a `y`-prefixed version (`xtype`, `yminorticks
     - `:keep`: don't change ticks or labels
 - `axloc`: `:left` or `:right` for `x` and `:top` or `:bottom` for `y`.
 - `minorticks`: only for `:default` and `:fraction` types: whether to draw minor ticks.
+- `unit`: a symbol or string
+- `units_in`: one of `:last_ticklabel`, `:axislabel`, and `nothing`.
 
 Arbitrary keywords like `xlabel=("log scale", :loc=>"center")`
 are passed on by calling `ax.set_xlabel("log_scale", loc="center")`.
@@ -27,6 +29,7 @@ function set(
     xminorticks = true,           yminorticks = true,
     xticklabels = nothing,        yticklabels = nothing,
     xunit       = nothing,        yunit       = nothing,
+    xunits_in   = :axislabel,     yunits_in   = :axislabel,
     kw...
 )
     # Axis location, spines, ticks, and gridlines.
@@ -57,12 +60,27 @@ function set(
     end
     # (No, can't do this in loop to DRY: `.tick_right`, `.set_ylim`, etc. And macro: hard).
 
+    kw = Dict(pairs(kw))
+    # ↪ kw is NamedTuple, which is immutable. But we change values here:
+    if !isnothing(xunit) && xunits_in == :axislabel
+        xlabel = get(kw, :xlabel, pyconvert(String, ax.get_xlabel()))
+        kw[:xlabel] = xlabel * "  ($xunit)"
+    end
+    if !isnothing(yunit) && yunits_in == :axislabel
+        if :hylabel in keys(kw) && kw[:hylabel] != nothing
+            hylab = get(kw, :hylabel, "")
+            kw[:hylabel] = hylab * "  ($yunit)"
+        else
+            ylabel = get(kw, :ylabel, pyconvert(String, ax.get_ylabel()))
+            kw[:ylabel] = ylabel * "  ($yunit)"
+        end
+    end
+
     # Instead of calling `ax.set(; kw...)`, we call the individual methods, so that we
     # can pass more than just the one argument for each.
     for (k, v) in kw
         hasproperty(ax, "set_$k") && _call(getproperty(ax, "set_$k"), v)
     end
-
     :hylabel in keys(kw) && _call(hylabel $ ax, kw[:hylabel])
     :legend in keys(kw) && _call(legend $ ax, kw[:legend])
 
@@ -95,6 +113,7 @@ function set(
         [xminorticks, yminorticks],
         [xticklabels, yticklabels],
         [xunit, yunit],
+        [xunits_in, yunits_in],
     )
 
     # Seems that calling `set_major_formatter` before the `set_major_locator` of
