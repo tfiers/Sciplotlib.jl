@@ -64,15 +64,15 @@ function set(
     # ↪ kw is NamedTuple, which is immutable. But we change values here:
     if !isnothing(xunit) && xunits_in == :axislabel
         xlabel = get(kw, :xlabel, pyconvert(String, ax.get_xlabel()))
-        kw[:xlabel] = xlabel * "  ($xunit)"
+        kw[:xlabel] = xlabel * " ($xunit)"
     end
     if !isnothing(yunit) && yunits_in == :axislabel
         if :hylabel in keys(kw) && kw[:hylabel] != nothing
             hylab = get(kw, :hylabel, "")
-            kw[:hylabel] = hylab * "  ($yunit)"
+            kw[:hylabel] = hylab * " ($yunit)"
         else
             ylabel = get(kw, :ylabel, pyconvert(String, ax.get_ylabel()))
-            kw[:ylabel] = ylabel * "  ($yunit)"
+            kw[:ylabel] = ylabel * " ($yunit)"
         end
     end
 
