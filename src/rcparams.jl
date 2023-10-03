@@ -26,6 +26,7 @@ sciplotlib_style = Dict(
     "axes.titlesize"       => "medium", # Default is "large"
     "axes.titleweight"     => "bold",   # Default is "normal"
     "axes.titlepad"        => 12,       # Distance to axis. Default: 6.0 (pts)
+    "axes.labelpad"        => 8,        # Default: 4
     "xaxis.labellocation"  => "center",
     "axes.titlelocation"   => "center",
 
