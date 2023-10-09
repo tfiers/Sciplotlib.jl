@@ -4,9 +4,9 @@ Set Axes properties and apply beautiful defaults.
 Options. Each has both an `x`- and a `y`-prefixed version (`xtype`, `yminorticks`, …)
 - `type`: one of
     - `:off`: hide all axis artists.
-    - `:categorical`: no ticks nor grid. Supply `x`/`yticklabels`.
+    - `:categorical` or `:cat`: no ticks nor grid. Supply `x`/`yticklabels`.
     - `:range`: ticks and grid mark the data range (and nothing else).
-    - `:fraction`: values are ∈ [0,1] and displayed as percentages.
+    - `:fraction` or `:frac`: values are ∈ [0,1] and displayed as percentages.
     - `:default`: our opinionated default
     - `:keep`: don't change ticks or labels
 - `axloc`: `:left` or `:right` for `x` and `:top` or `:bottom` for `y`.
@@ -35,7 +35,7 @@ function set(
     # Axis location, spines, ticks, and gridlines.
     if ytype != :keep
         (yaxloc == :right) && ax.yaxis.tick_right()
-        yticks_on = ytype ∉ [:categorical, :off]
+        yticks_on = ytype ∉ [:categorical, :cat, :off]
         leftticks_on  = (yticks_on && yaxloc == :left)
         rightticks_on = (yticks_on && yaxloc == :right)
             # If `false`, no gridlines, spines, nor ticks. (But can still have ticklabels).
@@ -44,11 +44,11 @@ function set(
         ax.tick_params(left=leftticks_on, right=rightticks_on)
         ax.yaxis.grid(yticks_on)
         (ytype == :off) && ax.yaxis.set_visible(false)
-        (ytype == :fraction) && ax.set_ylim(0, 1)
+        (ytype ∈ [:fraction, :frac]) && ax.set_ylim(0, 1)
     end
     if xtype != :keep
         (xaxloc == :top) && ax.xaxis.tick_top()
-        xticks_on = xtype ∉ [:categorical, :off]
+        xticks_on = xtype ∉ [:categorical, :cat, :off]
         bottomticks_on = (xticks_on && xaxloc == :bottom)
         topticks_on    = (xticks_on && xaxloc == :top)
         ax.spines["bottom"].set_visible(bottomticks_on)
@@ -56,7 +56,7 @@ function set(
         ax.tick_params(bottom=bottomticks_on, top=topticks_on)
         ax.xaxis.grid(xticks_on)
         (xtype == :off) && ax.xaxis.set_visible(false)
-        (xtype == :fraction) && ax.set_xlim(0, 1)
+        (xtype ∈ [:fraction, :frac]) && ax.set_xlim(0, 1)
     end
     # (No, can't do this in loop to DRY: `.tick_right`, `.set_ylim`, etc. And macro: hard).
 
@@ -119,8 +119,8 @@ function set(
     # Seems that calling `set_major_formatter` before the `set_major_locator` of
     # `_set_ticks` has no effect. Hence we do it after.
     getpercentfmt() = mpl.ticker.PercentFormatter(xmax=1)
-    (ytype == :fraction) && ax.yaxis.set_major_formatter(getpercentfmt())
-    (xtype == :fraction) && ax.xaxis.set_major_formatter(getpercentfmt())
+    (ytype ∈ [:fraction, :frac]) && ax.yaxis.set_major_formatter(getpercentfmt())
+    (xtype ∈ [:fraction, :frac]) && ax.xaxis.set_major_formatter(getpercentfmt())
     return nothing
 end
 

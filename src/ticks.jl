@@ -18,7 +18,7 @@ function _set_ticks(ax, args...)
             axis.grid(which = "major", visible = false)
             turn_off_minorticks()
 
-        elseif axtype == :categorical
+        elseif axtype ∈ [:categorical, :cat]
             # Do not mess with ticklocs. Except:
             turn_off_minorticks()
 
