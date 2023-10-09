@@ -23,12 +23,14 @@ sciplotlib_style = Dict(
     "ytick.labelsize"      => "medium", # Default.
     "legend.fontsize"      => 8,        # Default: "medium"
     "axes.labelsize"       => "medium", # Default.
-    "axes.titlesize"       => "medium", # Default is "large"
-    "axes.titleweight"     => "bold",   # Default is "normal"
-    "axes.titlepad"        => 12,       # Distance to axis. Default: 6.0 (pts)
     "axes.labelpad"        => 8,        # Default: 4
     "xaxis.labellocation"  => "center",
     "axes.titlelocation"   => "center",
+    "axes.titlesize"       => "medium", # Default is "large"
+    "axes.titleweight"     => "bold",   # Default is "normal"
+    "axes.titlepad"        => 12,       # Distance to axis. Default: 6.0 (pts)
+    "figure.titlesize"     => "medium", # Default is "large"
+    "figure.titleweight"   => "bold",   # Default is "normal"
 
     "legend.borderpad"     => 0.6,     # Default: 0.4 (pts)
     "legend.borderaxespad" => 0.8,     # Default: 0.5 (pts)
