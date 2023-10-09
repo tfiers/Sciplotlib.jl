@@ -22,7 +22,7 @@ function _set_ticks(ax, args...)
             # Do not mess with ticklocs. Except:
             turn_off_minorticks()
 
-        elseif axis.get_scale() == "log"
+        elseif pyconvert(String, axis.get_scale()) == "log"
             # Mpl default is good, do nothing.
 
         else
