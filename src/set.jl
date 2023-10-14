@@ -12,7 +12,7 @@ Options. Each has both an `x`- and a `y`-prefixed version (`xtype`, `yminorticks
 - `axloc`: `:left` or `:right` for `x` and `:top` or `:bottom` for `y`.
 - `minorticks`: only for `:default` and `:fraction` types: whether to draw minor ticks.
 - `unit`: a symbol or string
-- `units_in`: one of `:last_ticklabel`, `:axislabel`, and `nothing`.
+- `unit_in`: one of `:last_ticklabel`, `:axislabel`, and `nothing`.
 
 Arbitrary keywords like `xlabel=("log scale", :loc=>"center")`
 are passed on by calling `ax.set_xlabel("log_scale", loc="center")`.
@@ -29,7 +29,7 @@ function set(
     xminorticks = true,           yminorticks = true,
     xticklabels = nothing,        yticklabels = nothing,
     xunit       = nothing,        yunit       = nothing,
-    xunits_in   = :axislabel,     yunits_in   = :axislabel,
+    xunit_in   = :axislabel,      yunit_in   = :axislabel,
     kw...
 )
     # Axis location, spines, ticks, and gridlines.
@@ -62,11 +62,11 @@ function set(
 
     kw = Dict(pairs(kw))
     # ↪ kw is NamedTuple, which is immutable. But we change values here:
-    if !isnothing(xunit) && xunits_in == :axislabel
+    if !isnothing(xunit) && xunit_in == :axislabel
         xlabel = get(kw, :xlabel, pyconvert(String, ax.get_xlabel()))
         kw[:xlabel] = xlabel * " ($xunit)"
     end
-    if !isnothing(yunit) && yunits_in == :axislabel
+    if !isnothing(yunit) && yunit_in == :axislabel
         if :hylabel in keys(kw) && kw[:hylabel] != nothing
             hylab = get(kw, :hylabel, "")
             kw[:hylabel] = hylab * " ($yunit)"
@@ -113,7 +113,7 @@ function set(
         [xminorticks, yminorticks],
         [xticklabels, yticklabels],
         [xunit, yunit],
-        [xunits_in, yunits_in],
+        [xunit_in, yunit_in],
     )
 
     # Seems that calling `set_major_formatter` before the `set_major_locator` of

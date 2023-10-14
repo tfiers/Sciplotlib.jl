@@ -2,7 +2,7 @@
 function _set_ticks(ax, args...)
 
     xypairs = zip([ax.xaxis, ax.yaxis], args...)
-    for (axis, axtype, ticklocs, nbins, minorticks, ticklabels, unit, units_in) in xypairs
+    for (axis, axtype, ticklocs, nbins, minorticks, ticklabels, unit, unit_in) in xypairs
 
         turn_off_minorticks() = axis.set_minor_locator(mpl.ticker.NullLocator())
 
@@ -50,7 +50,7 @@ function _set_ticks(ax, args...)
             ticklabels = [@sprintf "%.4g" t for t in ticklocs]
         end
 
-        if !isnothing(unit) && units_in == :last_ticklabel
+        if !isnothing(unit) && unit_in == :last_ticklabel
             suffix = " $unit"
             if Bool(axis == ax.xaxis)
                 prefix_width = round(Int, length(suffix) * 1.6)
