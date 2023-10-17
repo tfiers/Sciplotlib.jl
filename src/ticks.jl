@@ -50,7 +50,7 @@ function _set_ticks(ax, args...)
             ticklabels = [@sprintf "%.4g" t for t in ticklocs]
         end
 
-        if !isnothing(unit) && unit_in == :last_ticklabel
+        if !isnothing(unit) && unit_in ∈ [:last_ticklabel, :every_ticklabel]
             suffix = " $unit"
             if Bool(axis == ax.xaxis)
                 prefix_width = round(Int, length(suffix) * 1.6)
@@ -59,7 +59,13 @@ function _set_ticks(ax, args...)
             else
                 prefix = ""
             end
-            ticklabels[end] = prefix * ticklabels[end] * suffix
+            if unit_in == :last_ticklabel
+                ticklabels[end] = prefix * ticklabels[end] * suffix
+            else
+                for i in eachindex(ticklabels)
+                    ticklabels[i] = prefix * ticklabels[i] * suffix
+                end
+            end
         end
 
         # bbox = Dict(

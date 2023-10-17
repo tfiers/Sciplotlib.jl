@@ -12,7 +12,7 @@ Options. Each has both an `x`- and a `y`-prefixed version (`xtype`, `yminorticks
 - `axloc`: `:left` or `:right` for `x` and `:top` or `:bottom` for `y`.
 - `minorticks`: only for `:default` and `:fraction` types: whether to draw minor ticks.
 - `unit`: a symbol or string
-- `unit_in`: one of `:last_ticklabel`, `:axislabel`, and `nothing`.
+- `unit_in`: one of `:last_ticklabel`, `:every_ticklabel`, `:axislabel`, and `nothing`.
 
 Arbitrary keywords like `xlabel=("log scale", :loc=>"center")`
 are passed on by calling `ax.set_xlabel("log_scale", loc="center")`.
