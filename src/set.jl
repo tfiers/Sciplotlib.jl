@@ -9,6 +9,7 @@ Options. Each has both an `x`- and a `y`-prefixed version (`xtype`, `yminorticks
     - `:fraction` or `:frac`: values are ∈ [0,1] and displayed as percentages.
     - `:default`: our opinionated default
     - `:keep`: don't change ticks or labels
+- `ticklocs`
 - `axloc`: `:left` or `:right` for `x` and `:top` or `:bottom` for `y`.
 - `minorticks`: only for `:default` and `:fraction` types: whether to draw minor ticks.
 - `unit`: a symbol or string
@@ -24,7 +25,7 @@ function set(
     ax;
     xtype       = :default,       ytype       = :default,
     xaxloc      = :bottom,        yaxloc      = :left,
-    xticks      = :auto,          yticks      = :auto,
+    xticklocs   = :auto,          yticklocs   = :auto,
     nbins_x     = 7,              nbins_y     = 7,
     xminorticks = true,           yminorticks = true,
     xticklabels = nothing,        yticklabels = nothing,
@@ -108,7 +109,7 @@ function set(
     _set_ticks(
         ax,
         [xtype, ytype],
-        [xticks, yticks],
+        [xticklocs, yticklocs],
         [nbins_x, nbins_y],
         [xminorticks, yminorticks],
         [xticklabels, yticklabels],
